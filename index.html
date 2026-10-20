@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<title>Weihnachtsbaum Adventskalender</title>
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +20,7 @@
 		<h1>Unser Weihnachtsbaum-<wbr>Adventskalender</h1>
 		<p class="subtitle">Erinnerungen aus vergangenen Jahren</p>
 		<p class="countdown" id="countdown"></p>
+		<p class="score" id="score"></p>
 	</header>
 
 	<main class="calendar" id="calendar"></main>
@@ -28,15 +29,30 @@
 
 	<div class="overlay" id="overlay" aria-hidden="true">
 		<button class="close-button" id="closeButton" aria-label="Schließen">×</button>
+		<button class="nav-button prev" id="prevButton" aria-label="Vorheriges Foto">‹</button>
+		<button class="nav-button next" id="nextButton" aria-label="Nächstes Foto">›</button>
 
-		<div class="overlay-content">
+		<div class="overlay-content" id="overlayContent">
 			<figure class="polaroid">
 				<img id="overlayImage" src="" alt="">
-				<figcaption id="yearText">Welches Jahr war das?</figcaption>
+
+				<figcaption id="caption">
+					<div class="guess" id="guessPanel">
+						<output id="guessValue" for="guessSlider">2015</output>
+						<input type="range" id="guessSlider" min="2000" max="2026" value="2015"
+							aria-label="Dein Tipp für das Jahr">
+					</div>
+
+					<div class="result" id="resultPanel" hidden>
+						<div id="yearText"></div>
+						<div id="resultDetail"></div>
+					</div>
+				</figcaption>
 			</figure>
 
 			<div class="controls">
-				<button id="yearButton" class="primary">Jahr anzeigen</button>
+				<button id="skipButton" class="secondary">Nur Jahr zeigen</button>
+				<button id="yearButton" class="primary">Tipp abgeben</button>
 				<button id="soundButton" class="sound" aria-label="Musik an/aus">
 					<span class="eq"><i></i><i></i><i></i></span>
 				</button>
