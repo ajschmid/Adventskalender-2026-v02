@@ -1,0 +1,392 @@
+:root {
+	--frost: #eceff0;
+	--snow: #fbfcfc;
+	--spruce: #17302a;
+	--spruce-soft: #2a4a41;
+	--ink: #14211d;
+	--muted: #6b7a76;
+	--berry: #b5233a;
+
+	--serif: "Instrument Serif", Georgia, serif;
+	--sans: "DM Sans", system-ui, sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	background: var(--frost);
+	color: var(--ink);
+	font-family: var(--sans);
+	-webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Kopfbereich ---------- */
+header {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	padding: 72px 20px 36px;
+}
+
+h1 {
+	margin: 0;
+	font-family: var(--serif);
+	font-weight: 400;
+	font-size: clamp(2.4rem, 7vw, 4.4rem);
+	line-height: 1.05;
+	letter-spacing: -0.01em;
+	color: var(--spruce);
+}
+
+.subtitle {
+	margin: 18px 0 0;
+	font-size: 1rem;
+	color: var(--muted);
+}
+
+.countdown {
+	margin: 6px 0 0;
+	min-height: 1.4em;
+	font-family: var(--serif);
+	font-style: italic;
+	font-size: 1.3rem;
+	color: var(--berry);
+}
+
+/* ---------- Kalender-Raster ---------- */
+.calendar {
+	position: relative;
+	z-index: 1;
+	max-width: 980px;
+	margin: 0 auto;
+	padding: 20px 20px 80px;
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 14px;
+}
+
+@media (max-width: 820px) {
+	.calendar { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+}
+
+@media (max-width: 480px) {
+	.calendar { grid-template-columns: repeat(3, 1fr); padding: 12px 14px 60px; }
+	header { padding-top: 48px; }
+}
+
+/* ---------- Türchen ---------- */
+.card {
+	position: relative;
+	aspect-ratio: 4 / 5;
+	padding: 0;
+	border: 0;
+	background: var(--snow);
+	border-radius: 6px;
+	cursor: pointer;
+	perspective: 900px;
+	font: inherit;
+	color: inherit;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.card:focus-visible {
+	outline: 2px solid var(--berry);
+	outline-offset: 3px;
+}
+
+/* Foto hinter der Tür */
+.card .photo {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 6px;
+}
+
+/* Die Tür selbst */
+.door {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	background: var(--spruce);
+	color: var(--snow);
+	border-radius: 6px;
+	transform-origin: left center;
+	backface-visibility: hidden;
+	transition: transform 0.9s cubic-bezier(0.5, 0, 0.15, 1),
+		background 0.3s, box-shadow 0.9s;
+	box-shadow: 0 1px 2px rgba(20, 33, 29, 0.2);
+}
+
+.door .num {
+	font-family: var(--serif);
+	font-size: clamp(2rem, 5.5vw, 3.2rem);
+	line-height: 1;
+}
+
+.door .month {
+	font-size: 0.72rem;
+	opacity: 0.6;
+}
+
+.card:hover .door {
+	background: var(--spruce-soft);
+}
+
+/* Geöffnet */
+.card.opened .door {
+	transform: rotateY(-112deg);
+	box-shadow: 8px 0 20px rgba(20, 33, 29, 0.25);
+	pointer-events: none;
+}
+
+.card.opened {
+	box-shadow: 0 6px 22px rgba(20, 33, 29, 0.18);
+}
+
+/* Heute */
+.card.today .door::after {
+	content: "";
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--berry);
+	animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+	0%, 100% { box-shadow: 0 0 0 0 rgba(181, 35, 58, 0.6); }
+	50% { box-shadow: 0 0 0 7px rgba(181, 35, 58, 0); }
+}
+
+/* Gesperrt */
+.card.locked .door {
+	background: #cfd7d5;
+	color: #8a9894;
+	box-shadow: none;
+	cursor: not-allowed;
+}
+
+.card.locked:hover .door {
+	background: #cfd7d5;
+}
+
+.card.shake {
+	animation: shake 0.4s;
+}
+
+@keyframes shake {
+	20% { transform: translateX(-5px); }
+	40% { transform: translateX(5px); }
+	60% { transform: translateX(-3px); }
+	80% { transform: translateX(3px); }
+}
+
+/* ---------- Hinweis (statt alert) ---------- */
+.toast {
+	position: fixed;
+	left: 50%;
+	bottom: 28px;
+	z-index: 1100;
+	transform: translate(-50%, 20px);
+	padding: 12px 20px;
+	border-radius: 999px;
+	background: var(--spruce);
+	color: var(--snow);
+	font-size: 0.95rem;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.25s, transform 0.25s;
+	max-width: 90vw;
+	text-align: center;
+}
+
+.toast.show {
+	opacity: 1;
+	transform: translate(-50%, 0);
+}
+
+/* ---------- Overlay ---------- */
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(14, 26, 22, 0.7);
+	-webkit-backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.35s;
+	overflow-y: auto;
+	padding: 24px 0;
+}
+
+.overlay.show {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.overlay-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 28px;
+	max-width: 92vw;
+	margin: auto;
+	transform: translateY(16px) scale(0.96);
+	transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.overlay.show .overlay-content {
+	transform: none;
+}
+
+/* Polaroid */
+.polaroid {
+	margin: 0;
+	padding: 14px 14px 0;
+	background: var(--snow);
+	border-radius: 3px;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+	transform: rotate(-1.5deg);
+}
+
+.polaroid img {
+	display: block;
+	max-width: min(86vw, 560px);
+	max-height: 58vh;
+	width: auto;
+	height: auto;
+	background: #dfe5e3;
+}
+
+.polaroid figcaption {
+	padding: 16px 0 20px;
+	text-align: center;
+	font-family: var(--serif);
+	font-style: italic;
+	font-size: 2rem;
+	line-height: 1.1;
+	color: #a9b4b1;
+	transition: color 0.4s;
+}
+
+.polaroid figcaption.show {
+	color: var(--spruce);
+}
+
+/* Steuerung */
+.controls {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.primary {
+	padding: 13px 28px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--snow);
+	color: var(--spruce);
+	font: 500 1rem var(--sans);
+	cursor: pointer;
+	transition: transform 0.15s, background 0.2s;
+}
+
+.primary:hover { background: #fff; }
+.primary:active { transform: scale(0.96); }
+
+.sound {
+	display: grid;
+	place-items: center;
+	width: 46px;
+	height: 46px;
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: 50%;
+	background: transparent;
+	cursor: pointer;
+}
+
+.sound:hover { background: rgba(255, 255, 255, 0.1); }
+
+.eq {
+	display: flex;
+	align-items: flex-end;
+	gap: 3px;
+	height: 16px;
+}
+
+.eq i {
+	display: block;
+	width: 3px;
+	height: 4px;
+	border-radius: 1px;
+	background: var(--snow);
+}
+
+.sound.playing .eq i { animation: eq 0.9s ease-in-out infinite; }
+.sound.playing .eq i:nth-child(2) { animation-delay: -0.3s; }
+.sound.playing .eq i:nth-child(3) { animation-delay: -0.6s; }
+
+@keyframes eq {
+	0%, 100% { height: 4px; }
+	50% { height: 16px; }
+}
+
+.close-button {
+	position: fixed;
+	top: 14px;
+	right: 18px;
+	width: 44px;
+	height: 44px;
+	border: 0;
+	background: transparent;
+	color: var(--snow);
+	font-size: 2.2rem;
+	line-height: 1;
+	cursor: pointer;
+	opacity: 0.8;
+}
+
+.close-button:hover { opacity: 1; }
+
+button:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 3px;
+}
+
+/* ---------- Schnee ---------- */
+.snowflake {
+	position: fixed;
+	top: -20px;
+	z-index: 0;
+	border-radius: 50%;
+	background: #fff;
+	pointer-events: none;
+	animation: fall linear infinite;
+}
+
+@keyframes fall {
+	0% { transform: translate(0, 0); }
+	100% { transform: translate(40px, 105vh); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.snowflake, .card.today .door::after, .sound.playing .eq i { animation: none; }
+	.door, .overlay, .overlay-content { transition-duration: 0.01s; }
+}

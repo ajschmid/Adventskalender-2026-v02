@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Weihnachtsbaum Adventskalender</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+		rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<header>
+		<h1>Unser Weihnachtsbaum-<wbr>Adventskalender</h1>
+		<p class="subtitle">Erinnerungen aus vergangenen Jahren</p>
+		<p class="countdown" id="countdown"></p>
+	</header>
+
+	<main class="calendar" id="calendar"></main>
+
+	<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+	<div class="overlay" id="overlay" aria-hidden="true">
+		<button class="close-button" id="closeButton" aria-label="Schließen">×</button>
+
+		<div class="overlay-content">
+			<figure class="polaroid">
+				<img id="overlayImage" src="" alt="">
+				<figcaption id="yearText">Welches Jahr war das?</figcaption>
+			</figure>
+
+			<div class="controls">
+				<button id="yearButton" class="primary">Jahr anzeigen</button>
+				<button id="soundButton" class="sound" aria-label="Musik an/aus">
+					<span class="eq"><i></i><i></i><i></i></span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<audio id="audioPlayer" loop></audio>
+
+	<script src="script.js"></script>
+</body>
+
+</html>
